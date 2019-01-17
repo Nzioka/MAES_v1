@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="maturity_types">
+        <item>Early</item>
+        <item>Medium</item>
+        <item>Late</item>
+    </string-array>
+    <string-array name="drought_resistance">
+        <item>Yes</item>
+        <item>No</item>
+    </string-array>
+</resources>
