@@ -6,4 +6,6 @@
     <string name="maturity">Maturity</string>
     <string name="drought_resistant">Drought resistant</string>
     <string name="results">Results</string>
+    <string name="altitude">Altitude:</string>
+    <string name="location_info">Location</string>
 </resources>
