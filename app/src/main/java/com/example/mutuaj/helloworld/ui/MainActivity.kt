@@ -14,11 +14,17 @@ import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.widget.Toast
+import com.example.mutuaj.helloworld.MaesApplication
 import com.example.mutuaj.helloworld.R
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.*
+import io.reactivex.Flowable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
+import retrofit2.HttpException
+import java.net.HttpURLConnection
 
 
 class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
@@ -39,6 +45,8 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
     private val LOCATION_REQUEST_CODE = 999
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+
+    private val repo get() = MaesApplication.appComponent.getCropRepository()
 
     private val isLocationEnabled: Boolean
         get() {
@@ -246,7 +254,41 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
 
         Log.d("MAIN", "$lon, $lat $maturity, $drought")
 
+        repo.postToServer(lat, lon, maturity, drought)
+            .toFlowable()
+            .flatMap {
+                Flowable.fromIterable(it)
+            }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                // for now just logging it to console
+                Log.d("MAIN", "$it")
+            }, {
+                processException(it)
+            })
+
 
     }
 
+    private fun processException(throwable: Throwable) {
+
+        if (throwable is HttpException) {
+
+            when (throwable.code()) {
+
+                HttpURLConnection.HTTP_INTERNAL_ERROR -> {
+                    Log.d("MAIN", "Internal server error")
+                }
+
+                HttpURLConnection.HTTP_NOT_FOUND -> {
+                    Log.d("MAIN", "Not found")
+                }
+
+                HttpURLConnection.HTTP_BAD_REQUEST -> {
+                    Log.d("MAIN", "Bad Request")
+                }
+            }
+        }
+    }
 }

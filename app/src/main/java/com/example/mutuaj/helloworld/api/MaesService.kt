@@ -10,10 +10,9 @@ interface MaesService {
     fun getCropData(
         @Query("x") x: String,
         @Query("y") y: String,
-        @Query("crop") crop: String,
         @Query("maturity") maturity: String,
         @Query("droughtTolerance") droughtTolerance: String
-    ) : Single<List<CropResponse>>
+    ): Single<List<CropResponse>>
 
     companion object {
         const val BASE_URL = "http://3.95.145.154:80"

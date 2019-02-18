@@ -2,6 +2,7 @@ package com.example.mutuaj.helloworld.di
 
 import android.app.Application
 import com.example.mutuaj.helloworld.MaesApplication
+import com.example.mutuaj.helloworld.repository.CropsRepository
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
@@ -18,6 +19,9 @@ interface AppComponent {
 
         fun build(): AppComponent
     }
+
+    @Singleton
+    fun getCropRepository(): CropsRepository
 
     fun inject(maesApplication: MaesApplication)
 

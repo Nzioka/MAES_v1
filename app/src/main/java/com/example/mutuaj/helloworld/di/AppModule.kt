@@ -3,6 +3,7 @@ package com.example.mutuaj.helloworld.di
 import android.app.Application
 import android.content.Context
 import com.example.mutuaj.helloworld.api.MaesService
+import com.example.mutuaj.helloworld.repository.CropsRepository
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit
@@ -16,13 +17,13 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideContext(application: Application): Context{
+    fun provideContext(application: Application): Context {
         return application.applicationContext
     }
 
     @Provides
     @Singleton
-    fun provideRetrofit(): Retrofit{
+    fun provideRetrofit(): Retrofit {
         return Retrofit.Builder()
             .addConverterFactory(MoshiConverterFactory.create())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
@@ -30,11 +31,16 @@ class AppModule {
             .build()
     }
 
-
     @Provides
     @Singleton
     fun provideMaesService(retrofit: Retrofit): MaesService {
-        return  retrofit.create()
+        return retrofit.create()
+    }
+
+    @Provides
+    @Singleton
+    fun provideCropsRepository(service: MaesService): CropsRepository {
+        return CropsRepository(service)
     }
 
 }
