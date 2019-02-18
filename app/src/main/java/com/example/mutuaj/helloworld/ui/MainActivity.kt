@@ -1,4 +1,4 @@
-package com.example.mutuaj.helloworld
+package com.example.mutuaj.helloworld.ui
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -14,6 +14,7 @@ import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.widget.Toast
+import com.example.mutuaj.helloworld.R
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.*
@@ -79,12 +80,18 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
         btn_locate_me.setOnClickListener {
             Toast.makeText(this, "button clicked", Toast.LENGTH_LONG).show()
         }
+
+        btnSearchCrops.setOnClickListener {
+            postToServer()
+        }
         checkLocation()
     }
 
     private fun checkLocation(): Boolean {
-        if (!isLocationEnabled)
+        if (!isLocationEnabled) {
             showAlert()
+        }
+
         return isLocationEnabled
     }
 
@@ -227,6 +234,19 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
             latitude_value?.text = it.latitude.toString()
             altitude_value?.text = it.altitude.toString()
         }
+    }
+
+    fun postToServer() {
+
+        var lon = longitude_value.text.toString()
+        var lat = latitude_value.text.toString()
+
+        var maturity = maturity_spinner.selectedItem.toString()
+        var drought = drought_resistance_spinner.selectedItem.toString()
+
+        Log.d("MAIN", "$lon, $lat $maturity, $drought")
+
+
     }
 
 }
