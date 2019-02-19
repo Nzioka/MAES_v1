@@ -10,9 +10,10 @@ class CropsRepository(private val service: MaesService) {
     fun postToServer(
         x: String,
         y: String,
+        crop: String,
         maturity: String,
         droughtTolerance: String
     ): Single<List<CropResponse>> {
-        return service.getCropData(x, y, maturity, droughtTolerance)
+        return service.getCropData(x, y,crop, maturity, droughtTolerance)
     }
 }

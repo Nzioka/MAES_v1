@@ -254,7 +254,7 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
 
         Log.d("MAIN", "$lon, $lat $maturity, $drought")
 
-        repo.postToServer(lat, lon, maturity, drought)
+        repo.postToServer(lat, lon, "Maize", maturity, drought)
             .toFlowable()
             .flatMap {
                 Flowable.fromIterable(it)
